@@ -1,0 +1,107 @@
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PROC_DeleteAllHiddenData`()
+BEGIN
+	DELETE FROM client WHERE `disable` = 0;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`user`@`localhost` PROCEDURE `PROC_InsertClientInfo`(IN `loginIdP` INT, IN `nameUser` VARCHAR(40), IN `genderUser` INT(1), IN `dobUser` DATE, IN `phoneUser` VARCHAR(20), IN `jobtypeUser` VARCHAR(40), IN `degreeUser` VARCHAR(200), IN `majorUser` VARCHAR(100), IN `proDateUser` DATE, IN `worDateUser` DATE, IN `tocUser` VARCHAR(40))
+BEGIN
+INSERT INTO `client` (`loginId`,`name`,`gender`,`dob`,`phone`,`jobtype`,`degree`,`major`,`proDate`,`worDate`,`toc`)
+VALUES (loginIdP,nameUser,genderUser,dobUser,phoneUser,jobtypeUser,degreeUser,majorUser,proDateUser,worDateUser,tocUser);
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PROC_DeleteHiddenData`(IN `clientId` INT(11))
+BEGIN
+	DELETE FROM client WHERE id = clientId;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`user`@`localhost` PROCEDURE `PROC_InsertProfile`(IN `clientIdP` INT(11), IN `name` VARCHAR(40) CHARSET utf8mb4, IN `relationship` VARCHAR(40) CHARSET utf8mb4, IN `dob` DATE, IN `gender` INT(1), IN `phone` VARCHAR(10) CHARSET utf8mb4, IN `identify` VARCHAR(9) CHARSET utf8mb4, IN `address` VARCHAR(225) CHARSET utf8mb4)
+BEGIN
+INSERT INTO `profile`(clientId,nameP,relationshipP,dobP,genderP,phoneP,identifyP,addressP) VALUES (clientIdP,name,relationship,dob,gender,phone,identify,address);
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PROC_RestoreAllHiddenData`()
+BEGIN
+	UPDATE client
+    SET `disable` = 1
+    WHERE `disable` = 0;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PROC_RestoreHiddenData`(IN `clientId` INT(11))
+BEGIN
+	UPDATE client 
+    SET `disable` = 1
+	WHERE `disable` = 0 AND id = clientId;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`user`@`localhost` PROCEDURE `PROC_SelectClient`(IN `loginIdUser` INT(11), IN `limitNumber` INT(11), IN `offsetNumber` INT(11))
+BEGIN
+	SELECT * FROM `client` 
+    WHERE loginId = loginIdUser AND `disable` = 1 
+    LIMIT limitNumber OFFSET offsetNumber;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`user`@`localhost` PROCEDURE `PROC_SelectCookieForLogin`(IN `cookieUser` VARCHAR(225))
+BEGIN
+	SELECT * FROM `login` WHERE cookie = cookieUser;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`user`@`localhost` PROCEDURE `PROC_SelectDataFromClientAndLogin`(IN `clientIdP` INT(40))
+BEGIN
+SELECT c.*,l.email FROM `client` AS c,`login` AS l WHERE c.loginId = l.id AND c.id = clientIdP;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PROC_SelectHiddenDataFromClient`()
+BEGIN
+	SELECT * FROM `client` WHERE `disable` = 0;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`user`@`localhost` PROCEDURE `PROC_SelectProfile`(IN `clientIdP` INT(40))
+BEGIN
+SELECT * FROM `profile` WHERE clientId = clientIdP;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`user`@`localhost` PROCEDURE `PROC_SelectTotalClient`(IN `loginIdUser` INT(11))
+BEGIN
+	SELECT COUNT(disable) AS total 
+    FROM `client` 
+    WHERE disable = 1 AND loginId = loginIdUser;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `PROC_SelectUserByLogin`(IN `userEmail` VARCHAR(40), IN `userPass` VARCHAR(40))
+BEGIN
+	SELECT * FROM login WHERE `email` = userEmail AND `password` = userPass;
+END$$
+DELIMITER ;
+
+DELIMITER $$
+CREATE DEFINER=`user`@`localhost` PROCEDURE `PROC_UpdateCookieWhenLogin`(IN `cookieUser` VARCHAR(225), IN `idUser` INT(11))
+BEGIN
+	UPDATE `login`SET cookie = cookieUser WHERE id = idUser;
+END$$
+DELIMITER ;
+
