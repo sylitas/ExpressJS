@@ -1,0 +1,70 @@
+doctype html
+head
+  title Login Page
+  meta(charset='UTF-8')
+  meta(name='viewport' content='width=device-width, initial-scale=1')
+  // ===============================================================================================
+  link(rel='icon' type='image/png' href='/../loginForm/images/icons/favicon.ico')
+  // ===============================================================================================
+  link(rel='stylesheet' type='text/css' href='/../loginForm/vendor/bootstrap/css/bootstrap.min.css')
+  // ===============================================================================================
+  link(rel='stylesheet' type='text/css' href='/../loginForm/fonts/font-awesome-4.7.0/css/font-awesome.min.css')
+  // ===============================================================================================
+  link(rel='stylesheet' type='text/css' href='/../loginForm/vendor/animate/animate.css')
+  // ===============================================================================================
+  link(rel='stylesheet' type='text/css' href='/../loginForm/vendor/css-hamburgers/hamburgers.min.css')
+  // ===============================================================================================
+  link(rel='stylesheet' type='text/css' href='/../loginForm/vendor/select2/select2.min.css')
+  // ===============================================================================================
+  link(rel='stylesheet' type='text/css' href='/../loginForm/css/util.css')
+  link(rel='stylesheet' type='text/css' href='/../loginForm/css/main.css')
+  // ===============================================================================================
+.limiter
+  .container-login100
+    .wrap-login100
+      .login100-pic.js-tilt(data-tilt='')
+        img(src='/../loginForm/images/img-01.png' alt='IMG')
+      form.login100-form.validate-form(method='POST')
+        span.login100-form-title
+          | Express Demo
+          br
+          | Register Page
+        .wrap-input100.validate-input(data-validate = "Valid email is required: ex@abc.xyz")
+          input.input100(type='text' name='email' placeholder='Email' )
+          span.focus-input100
+          span.symbol-input100
+            i.fa.fa-envelope(aria-hidden='true')
+        .wrap-input100.validate-input(data-validate='Password is required')
+          input.input100(type='password' name='pass' placeholder='Password')
+          span.focus-input100
+          span.symbol-input100
+            i.fa.fa-lock(aria-hidden='true')
+        .wrap-input100.validate-input(data-validate='Password is required')
+          input.input100(type='password' name='repass' placeholder='Confirm Password')
+          span.focus-input100
+          span.symbol-input100
+            i.fa.fa-lock(aria-hidden='true')
+        .container-login100-form-btn
+          button.login100-form-btn
+            | Register
+        p.text-center(style={color: 'red'})
+            b #{err}
+        .text-center.p-t-136
+          a.txt2(href='/')
+            | Already has an Account ?
+            i.fa.fa-long-arrow-right.m-l-5(aria-hidden='true')
+// ===============================================================================================
+script(src='/../loginForm/vendor/jquery/jquery-3.2.1.min.js')
+// ===============================================================================================
+script(src='/../loginForm/vendor/bootstrap/js/popper.js')
+script(src='/../loginForm/vendor/bootstrap/js/bootstrap.min.js')
+// ===============================================================================================
+script(src='/../loginForm/vendor/select2/select2.min.js')
+// ===============================================================================================
+script(src='/../loginForm/vendor/tilt/tilt.jquery.min.js')
+script.
+  $('.js-tilt').tilt({
+  scale: 1.1
+  })
+// ===============================================================================================
+script(src='js/main.js')

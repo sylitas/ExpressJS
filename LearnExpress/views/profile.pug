@@ -1,0 +1,184 @@
+extends layouts/component.pug
+block nav
+    .nav-btn.pull-left
+        span
+        span
+        span
+    .breadcrumbs-area.clearfix
+        h4.page-title.pull-left Dashboard
+        ul.breadcrumbs.pull-left
+            li
+                span Profile
+block content
+    .main-content-inner
+        .pull-left.mt-3
+            button.btn.btn-rounded.btn-primary.mb-3(type='button' onclick="goBack()")
+                i.fa.fa-chevron-left
+        .row
+            .col-lg-12.mt-3
+                .card
+                    .card-body
+                        .row
+                            .col-lg-9.mb-3
+                                h4.header-title Profile's #{name} 
+                            .col-lg-3.text-right
+                                a(href="#") Edit 
+                                    i.fa.fa-edit
+                        .row
+                            .col-lg-4
+                                h6.text-center General Infomation
+                                br
+                                .single-table
+                                    .table-responsive
+                                        table.table.text-center
+                                            thead.text-uppercase.bg-light
+                                            tbody
+                                                tr
+                                                    td.text-left FullName :
+                                                    td.text-right #{name}
+                                                tr
+                                                    td.text-left Gender :
+                                                    td.text-right #{gender}
+                                                tr
+                                                    td.text-left Birthday :
+                                                    td.text-right #{dob}
+                                                tr
+                                                    td.text-left Phone :
+                                                    td.text-right #{phone}
+                                                tr
+                                                    td.text-left Type of Job :
+                                                    td.text-right #{job}
+                            .col-lg-4
+                                h6.text-center Achievement
+                                br
+                                .single-table
+                                    .table-responsive
+                                        table.table.text-center
+                                            thead.text-uppercase.bg-light
+                                            tbody
+                                                tr
+                                                    td.text-left Degree :
+                                                    td.text-right #{degree}
+                                                tr
+                                                    td.text-left Major :
+                                                    td.text-right #{major}
+                                                
+                            .col-lg-4
+                                h6.text-center Work Status
+                                br
+                                .single-table
+                                    .table-responsive
+                                        table.table.text-center
+                                            thead.text-uppercase.bg-light
+                                            tbody
+                                                tr
+                                                    td.text-left Probation Date :
+                                                    td.text-right #{proDate}
+                                                tr
+                                                    td.text-left Working Date :
+                                                    td.text-right #{worDate}
+                                                tr
+                                                    td.text-left Type of Contract :
+                                                    td.text-right #{toc}
+            .col-lg-12.mt-3#cssHere
+                .card
+                    .card-body
+                        .row
+                            .col-lg-6
+                                ul#pills-tab.nav.nav-pills.mb-3(role='tablist')
+                                    li.nav-item
+                                        a#pills-home-tab.nav-link.active(data-toggle='pill' href='#pills-home' role='tab' aria-controls='pills-home' aria-selected='true' onClick="addFunction(1)") Family
+                                    li.nav-item
+                                        a#pills-profile-tab.nav-link(data-toggle='pill' href='#pills-profile' role='tab' aria-controls='pills-profile' aria-selected='false' onClick="addFunction(0)") ...
+                            .col-lg-6.text-right
+                                button.btn.btn-rounded.btn-primary.mb-3#addInfo(type='button' name="addInfo" data-toggle='modal' data-target='.bd-example-modal-lg') ADD 
+                                    i.fa.fa-plus
+                        #pills-tabContent.tab-content
+                            #pills-home.tab-pane.fade.show.active(role='tabpanel' aria-labelledby='pills-home-tab')
+                                .row
+                                    .col
+                                        .single-table
+                                            .table-responsive
+                                                table.table.table-striped
+                                                    thead.text-uppercase.bg-light
+                                                        tr
+                                                            th.text-left(scope="col") FullName
+                                                            th.text-center(scope="col") Relationship
+                                                            th.text-center(scope="col") Gender
+                                                            th.text-center(scope="col") Birthday
+                                                            th.text-center(scope="col") Phone
+                                                            th.text-center(scope="col") Identify Number
+                                                            th.text-right(scope="col") Address
+                                                    tbody
+                                                        for infor in inforList
+                                                            tr
+                                                                td.text-left=infor.nameP
+                                                                td.text-center=infor.relationshipP
+                                                                td.text-center=infor.genderP
+                                                                td.text-center=infor.dobP
+                                                                td.text-center=infor.phoneP
+                                                                td.text-center=infor.identifyP
+                                                                td.text-right=infor.addressP
+
+                            #pills-profile.tab-pane.fade(role='tabpanel' aria-labelledby='pills-profile-tab')
+                                p //Continue
+            .modal.fade.bd-example-modal-lg
+              .modal-dialog.modal-lg
+                .modal-content
+                  .modal-header
+                    h5.modal-title User Information
+                    button.close(type='button' data-dismiss='modal')
+                      span &times;
+                  .modal-body
+                    form#validateForm(method = "POST" )
+                      .row
+                        .col-lg-12
+                            h6 Personal Infomation
+                            br
+                        .col-lg-6
+                            .form-group
+                                label.col-form-label Name (*)
+                                input.form-control(type='text' placeholder='Full name' name="nameP")
+                            .form-group
+                                label.col-form-label Relationship
+                                input.form-control(type='text' placeholder='Mother, Father, etc.' name="relationshipP")
+                            .form-group
+                                label.col-form-label Gender
+                                select.form-control(name="genderP")
+                                    option(value = null disabled selected) Choose Gender
+                                    option(value = 1) Male
+                                    option(value = 2) Female
+                                    option(value = null) Other
+                            .form-group
+                                label.col-form-label Date of Birth
+                                input.form-control(type='date' name="dobP")
+                        .col-lg-6
+                            .form-group
+                                label.col-form-label Telephone
+                                input.form-control(type='tel' placeholder='0123456789' name="phoneP")
+                            .form-group
+                                label.col-form-label Identifu Number
+                                input.form-control(type='tel' placeholder='012345678' name="identifyP")  
+                            .form-group
+                                label.col-form-label Address
+                                input.form-control(type='text' name="addressP" placeholder="87,Ha Tri,Ha Dong,Ha Noi")
+                      .row
+                        .col-lg-3
+                        .col-lg-6
+                          .submit-btn-area
+                            button#form_submit(type='submit')
+                              | Submit 
+                              i.ti-arrow-right
+                        .col-lg-3
+block footer
+    script.
+        function goBack() {
+            window.location.href = "/dashboard";
+        }
+        function addFunction(x){
+            if(x==1){
+                document.getElementById("addInfo").style.visibility = "visible";
+            }else{
+                document.getElementById("addInfo").style.visibility = "hidden";
+            }
+        }

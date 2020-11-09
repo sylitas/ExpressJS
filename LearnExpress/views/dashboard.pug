@@ -1,0 +1,238 @@
+extends layouts/component.pug
+block style
+  script.
+    $(document).ready(function(){
+      $('#checkAll').change(function (){
+        $('input[type="checkbox"]').prop('checked', $(this).prop("checked"));
+        if($('#checkAll').is(":checked")){
+          $('input[type="checkbox"]').not('#checkAll').parent().parent().addClass("table-danger");
+        }else{
+          $('input[type="checkbox"]').not('#checkAll').parent().parent().removeClass("table-danger");
+        }
+      });
+
+      var length = 0;
+      var valCheckBox = [];
+      $('input[type="checkbox"]').change(function(){
+        if($(this).is(":checked")){
+          length += 1 ;
+          $(this).not('#checkAll').parent().parent().addClass("table-danger");
+        }else{
+          length -= 1;
+          $(this).not('#checkAll').parent().parent().removeClass("table-danger");
+        }
+        if(length>0){
+          $('#disable').css('visibility','visible');
+        }else{
+          $('#disable').css('visibility','hidden');
+        }
+        $(':checkbox:checked').each(function(i){
+          valCheckBox[i] = $(this).val();
+        });
+      });
+
+      $('#disable').click(function(){
+        var cf = confirm("Are you sure want to hide them ?");
+        if(cf == true){
+          $('input[type="checkbox"]:checked').parent().parent().hide();
+          $('#disable').css('visibility','hidden');
+          $.ajax({
+            url: 'update',
+            type: 'POST',
+            data: {
+              'data':valCheckBox
+            }
+          });
+        }else{
+          $('input[type="checkbox"]:checked').attr('checked',false).parent().parent().removeClass("table-danger");
+          $('#disable').css('visibility','hidden');
+        }
+      });
+    });
+  style(type='text/css').
+    th{
+      background: white;
+      position: sticky;
+      top: 0;
+    }
+    #disable{
+      visibility: hidden;
+    }
+block nav
+  .nav-btn.pull-left
+    span
+    span
+    span
+  .breadcrumbs-area.clearfix
+    h4.page-title.pull-left Dashboard
+    ul.breadcrumbs.pull-left
+      li
+        span Datatable
+block content
+  .page-title-area
+    .row.align-items-center
+      .col-sm-6
+      .col-sm-6.clearfix
+  .main-content-inner
+    .row
+      // Primary table start
+      .col-12.mt-4
+        .card
+          .card-body
+            .row
+              .col-6
+                h4.header-title Client Management
+              .col-6
+                .pull-right
+                  button.btn.btn-flat.btn-danger.btn-lg#disable(type='button') Disable
+                  button.btn.btn-primary.btn-flat.btn-lg.ml-3(type='button' data-toggle='modal' data-target='.bd-example-modal-lg') Add
+                // Modal
+            .modal.fade.bd-example-modal-lg
+              .modal-dialog.modal-xl.modal-dialog-centered
+                .modal-content
+                  .modal-header
+                    h5.modal-title User Information
+                    button.close(type='button' data-dismiss='modal')
+                      span &times;
+                  .modal-body
+                    form#validateForm(method = "POST" )
+                      .row
+                        .col-lg-2
+                        .col-lg-3
+                          h6 Personal Infomation
+                          br
+                          .form-group
+                            label.col-form-label Name (*)
+                            input.form-control(type='text' placeholder='Full name' name="nameUser")
+                          .row
+                            .col-6
+                              .form-group
+                                label.col-form-label Gender
+                                select.form-control(name="gender")
+                                  option(value = null disabled selected) Choose Gender
+                                  option(value = 1) Male
+                                  option(value = 2) Female
+                                  option(value = null) Other
+                            .col-6
+                              .form-group
+                                label.col-form-label Date of Birth
+                                input.form-control(type='date' name="dateUser")
+                          .row
+                            .col-6
+                              .form-group
+                                label.col-form-label Telephone
+                                input.form-control(type='tel' placeholder='0123456789' name="phoneUser")
+                            .col-6
+                              .form-group
+                                label.col-form-label Other Phone
+                                input.form-control(type='tel' placeholder='0123456789')
+                          .form-group
+                            label.col-form-label Type of Job
+                            select.form-control(name="job")
+                              option(value = null disabled selected) Choose Job
+                              option(value = "job1" ) job 1
+                              option(value = "job2" ) job 2
+                              option(value = "job3" ) job 3
+                        .col-lg-2
+                        .col-lg-3
+                          h6 Achievement  & Work Status
+                          br
+                          .form-group
+                            label.col-form-label Degree
+                            input.form-control(type='text' name="degree" placeholder="PhD, master, etc.")
+                          .form-group
+                            label.col-form-label Major
+                            input.form-control(type='text' name="major" placeholder="Information Technology, Marketing, etc.")
+                          .row
+                            .col-lg-6
+                              .form-group
+                                label.col-form-label Date of Probation
+                                input.form-control(type='date' name="proDate")
+                            .col-lg-6
+                              .form-group
+                                label.col-form-label Date of Working
+                                input.form-control(type='date' name="worDate")
+                          .form-group
+                            label.col-form-label Type of Contract
+                            input.form-control(type='text' name="contract" placeholder="Definite-term labor contract, Internship, etc.")
+                      .row
+                        .col-lg-4
+                        .col-lg-4
+                          .submit-btn-area
+                            button#form_submit(type='submit')
+                              | Submit 
+                              i.ti-arrow-right
+                        .col-lg-4
+            .card
+              .card-body
+                .single-table
+                  .table-responsive#height
+                    table.table.table-striped.text-center
+                      thead.text-uppercase
+                        tr
+                          th(scope='col') Name
+                          th(scope='col') Gender
+                          th(scope='col') BirthDay
+                          th(scope='col') Phone
+                          th(scope='col') Job
+                          th(scope='col') Degree
+                          th(scope='col') Major
+                          th(scope='col') Probation
+                          th(scope='col') Official
+                          th(scope='col') Contract
+                          th(scope='col') Others
+                          th(scope='col') Hidden &nbsp
+                            input#checkAll(type='checkbox')
+                      tbody
+                        for userInfo in userList
+                          tr
+                            td=userInfo.name
+                            td=userInfo.gender
+                            td=userInfo.dob
+                            td=userInfo.phone
+                            td=userInfo.jobtype
+                            td=userInfo.degree
+                            td=userInfo.major
+                            td=userInfo.proDate
+                            td=userInfo.worDate
+                            td=userInfo.toc
+                            td
+                              a(href="/dashboard/profile?id="+userInfo.id)
+                                i.fa.fa-info-circle &nbsp
+                              a(href="/dashboard/edit?id="+userInfo.id)
+                                i.fa.fa-edit &nbsp
+                            td
+                              input(type='checkbox' name="checkBox" value=userInfo.id)
+            .card
+              .card-body
+                .pull-left
+                  p Page #{currentPage}/#{totalPage}
+                  p There are #{totalAll} elements in #{totalPage} pages
+                nav(aria-label='Page navigation example')
+                  ul.pagination.justify-content-end
+                    
+                    li.page-item
+                      a#fPage.page-link(href='?page=1') 1
+                    li.page-item
+                      a#pre.page-link(href='?page='+prePage) Previous  
+                    li.page-item
+                      a#current.page-link(href='?page='+currentPage) #{currentPage}
+                    li.page-item
+                      a#next.page-link(href='?page='+nextPage) Next
+                    li.page-item
+                      a#lPage.page-link(href='?page='+totalPage) #{totalPage}
+
+                            
+                            
+block footer
+  script.
+    $("#validateForm").validate({
+      rules: {
+        nameUser: "required",
+        phoneUser: {
+          digits: true,
+          maxlength:10
+        }
+      }
+    });
+  
