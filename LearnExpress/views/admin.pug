@@ -1,0 +1,391 @@
+extends layouts/componentForAdmin.pug
+block style
+  script.
+    $(document).ready(function(){
+      var table = $('#myTable').DataTable({
+        "paging": true,
+        "pageLength": 10,
+        "serverSide": true,
+        "processing": true,
+        "pagingType": "numbers",
+        "ajax": {
+          "type": "POST",
+          "url":"/admin/dashboard/postData"
+        },
+        "columnDefs": [
+          {
+            "targets": 11,
+            "data": null,
+            "defaultContent": '<div class="icon-container"><span class=ti-trash id=delete></span></div>'
+          },
+          {
+            "targets": 12,
+            "data": null,
+            "defaultContent": '<div class="icon-container"><span class=ti-reload id=restore></span></div>'
+          },
+          {
+            "targets": 13,
+            "data": null, 
+            "defaultContent": '<div class="icon-container">\
+            <button style="background: transparent;border: none !important;" type="button" data-toggle="modal" data-target="#exampleModalCenter">\
+            <span class=ti-pencil-alt id=edit>\
+            </span></button></div>'
+          }
+        ]
+      });
+      $("#myTable").on("click", "#delete", function() {
+        var cf = confirm('Are you sure want to delete it ?');
+        if(cf==true){
+          var id = $(this).parent().parent().parent().find('td:first-child').text();
+          $.ajax({
+            url: '/admin/dashboard/delete',
+            type: 'POST',
+            cache: false,
+            data: {
+              'id': id
+            }
+          });
+          table.ajax.reload();
+        }
+      });
+
+      $("#myTable").on("click", "#restore", function() {
+        var cf = confirm('Are you sure want to restore it ?');
+        if(cf==true){
+          var id = $(this).parent().parent().parent().find('td:first-child').text();
+          $.ajax({
+            url: '/admin/dashboard/restore',
+            type: 'POST',
+            cache: false,
+            data: {
+              'id': id
+            }
+          });
+          table.ajax.reload();
+        }
+      });
+
+      $("#delAll").click(function(){
+        var cf = confirm('Are you sure want to delete them ?');
+        if(cf==true){
+          $.ajax({
+            url: '/admin/dashboard/delAll',
+            type: 'POST',
+            cache: false,
+            success:function(notif){
+              table.ajax.reload();
+            }
+          });
+        }
+      });
+
+      $("#resAll").click(function(){
+        var cf = confirm('Are you sure want to restore them ?');
+        if(cf==true){
+          $.ajax({
+            url: '/admin/dashboard/resAll',
+            type: 'POST',
+            cache: false,
+            success:function(notif){
+              table.ajax.reload();
+            }
+          });
+        }
+      });
+      $("#myTable").on("click", "#edit", function() {
+        var id = $(this).parent().parent().parent().parent().find('td:first-child').text();
+        console.log(id);
+        $("#saveChanges").click(function(){
+          //---------name------------
+          var name = $("#nameTB").val();
+          if(name){
+            $.ajax({
+              url:'/admin/dashboard/updateData',
+              type:'POST',
+              cache: false,
+              data:{
+                'id':id,
+                'name':name
+              },
+              success: function(notification){
+                table.ajax.reload();
+              }
+            });
+          }
+          //---------gender------------
+          var gender = $('#genderTB').val();
+          if(gender){
+            $.ajax({
+              url:'/admin/dashboard/updateData',
+              type:'POST',
+              cache: false,
+              data:{
+                'id':id,
+                'gender':gender
+              },
+              success: function(notification){
+                table.ajax.reload();
+              }
+            });
+          }
+          //---------phone------------
+          var phone = $('#phoneTB').val();
+          if(phone){
+            $.ajax({
+              url:'/admin/dashboard/updateData',
+              type:'POST',
+              cache: false,
+              data:{
+                'id':id,
+                'phone':phone
+              },
+              success: function(notification){
+                table.ajax.reload();
+              }
+            });
+          }
+          //---------dob------------
+          var dob = $('#dobTB').val();
+          if(dob){
+            $.ajax({
+              url:'/admin/dashboard/updateData',
+              type:'POST',
+              cache: false,
+              data:{
+                'id':id,
+                'dob':dob
+              },
+              success: function(notification){
+                table.ajax.reload();
+              }
+            });
+          }
+          //---------job type------------
+          var job = $('#jobTB').val();
+          if(job){
+            $.ajax({
+              url:'/admin/dashboard/updateData',
+              type:'POST',
+              cache: false,
+              data:{
+                'id':id,
+                'job':job
+              },
+              success: function(notification){
+                table.ajax.reload();
+              }
+            });
+          }
+          //---------degree------------
+          var degree = $('#degreeTB').val();
+          if(degree){
+            $.ajax({
+              url:'/admin/dashboard/updateData',
+              type:'POST',
+              cache: false,
+              data:{
+                'id':id,
+                'degree':degree
+              },
+              success: function(notification){
+                table.ajax.reload();
+              }
+            });
+          }
+          //---------major------------
+          var major = $('#majorTB').val();
+          if($("#majorTB").val()){
+            $.ajax({
+              url:'/admin/dashboard/updateData',
+              type:'POST',
+              cache: false,
+              data:{
+                'id':id,
+                'major':major
+              },
+              success: function(notification){
+                table.ajax.reload();
+              }
+            });
+          }
+          //---------proDate------------
+          var proDate = $('#proDateTB').val();
+          if(proDate){
+            $.ajax({
+              url:'/admin/dashboard/updateData',
+              type:'POST',
+              cache: false,
+              data:{
+                'id':id,
+                'proDate':proDate
+              },
+              success: function(notification){
+                table.ajax.reload();
+              }
+            });
+          }
+          //---------worDate------------
+          var worDate = $('#worDateTB').val();
+          if(worDate){
+            $.ajax({
+              url:'/admin/dashboard/updateData',
+              type:'POST',
+              cache: false,
+              data:{
+                'id':id,
+                'worDate':worDate
+              },
+              success: function(notification){
+                table.ajax.reload();
+              }
+            });
+          }
+          //---------toc------------
+          var toc = $('#tocTB').val();
+          if(toc){
+            $.ajax({
+              url:'/admin/dashboard/updateData',
+              type:'POST',
+              cache: false,
+              data:{
+                'id':id,
+                'toc':toc
+              },
+              success: function(notification){
+                table.ajax.reload();
+              }
+            });
+          }
+
+          alert("Done!");
+        });
+      });
+    });
+
+block nav
+  .nav-btn.pull-left
+    span
+    span
+    span
+  .breadcrumbs-area.clearfix
+    h4.page-title.pull-left Dashboard
+block content
+  .page-title-area
+    .row.align-items-center
+      .col-sm-6
+      .col-sm-6.clearfix
+  .main-content-inner
+    .row
+      .col-1.mt-3
+        button.btn.btn-success.btn-lg#resAll(type='button')
+          b Restore All
+      .col-1.mt-3
+        button.btn.btn-danger.btn-lg#delAll(type='button')
+          b Delete All
+    .row
+      .col-12.mt-3
+        .card#tableHeight
+          .card-body(style='overflow:auto;')
+            h4.header-title Deletable Data Table
+            .single-table
+              .table-responsive
+                table.table.text-center#myTable
+                  thead.text-uppercase.bg-secondary
+                    tr.text-white
+                      th(scope='col') ID
+                      th(scope='col') Name
+                      th(scope='col') Gender
+                      th(scope='col') Phone
+                      th(scope='col') Birthday
+                      th(scope='col') Job Type
+                      th(scope='col') Degree
+                      th(scope='col') Major
+                      th(scope='col') Probationary period
+                      th(scope='col') Working period
+                      th(scope='col') Type of Contract
+                      th(scope='col') Delete
+                      th(scope='col') Restore
+                      th(scope='col') Edit
+    #exampleModalCenter.modal.fade
+      .modal-dialog.modal-dialog-centered.modal-xl(role='document')
+        .modal-content
+          .modal-header
+            h5.modal-title Modal title
+            button.close(type='button' data-dismiss='modal')
+              span &times;
+          .modal-body
+            form#validateForm(method = "POST" )
+              .row
+                .col-lg-2
+                .col-lg-3
+                  h6 Personal Infomation
+                  br
+                  .form-group
+                    label.col-form-label Name (*)
+                    input.form-control#nameTB(type='text' placeholder='Full name' autocomplete="off" name="nameUser")
+                  .row
+                    .col-6
+                      .form-group
+                        label.col-form-label Gender
+                        select.form-control#genderTB(name="gender")
+                          option(value = null disabled selected) Choose Gender
+                          option(value = 1) Male
+                          option(value = 2) Female
+                          option(value = null) Other
+                    .col-6
+                      .form-group
+                        label.col-form-label Date of Birth
+                        input.form-control#dobTB(type='date' autocomplete="off" name="dateUser")
+                  .row
+                    .col-6
+                      .form-group
+                        label.col-form-label Telephone
+                        input.form-control#phoneTB(type='tel' autocomplete="off" placeholder='0123456789' name="phoneUser")
+                  .form-group
+                    label.col-form-label Type of Job
+                    select.form-control#jobTB(name="job")
+                      option(value = null disabled selected) Choose Job
+                      option(value = "job1" ) job 1
+                      option(value = "job2" ) job 2
+                      option(value = "job3" ) job 3
+                .col-lg-2
+                .col-lg-3
+                  h6 Achievement  & Work Status
+                  br
+                  .form-group
+                    label.col-form-label Degree
+                    input.form-control#degreeTB(type='text' autocomplete="off" name="degree" placeholder="PhD, master, etc.")
+                  .form-group
+                    label.col-form-label Major
+                    input.form-control#majorTB(type='text' autocomplete="off" name="major" placeholder="Information Technology, Marketing, etc.")
+                  .row
+                    .col-lg-6
+                      .form-group
+                        label.col-form-label Date of Probation
+                        input.form-control#proDateTB(type='date' autocomplete="off" name="proDate")
+                    .col-lg-6
+                      .form-group
+                        label.col-form-label Date of Working
+                        input.form-control#worDateTB(type='date' autocomplete="off" name="worDate")
+                  .form-group
+                    label.col-form-label Type of Contract
+                    input.form-control#tocTB(type='text' autocomplete="off" name="contract" placeholder="Definite-term labor contract, Internship, etc.")
+              .modal-footer
+                button.btn.btn-secondary(type='button' data-dismiss='modal') Close
+                button.btn.btn-primary#saveChanges(type='button' data-dismiss='modal') Save changes
+block footer
+  script.
+    $("#validateForm").validate({
+      rules: {
+        phoneUser: {
+          digits: true,
+          maxlength:10
+        }
+      }
+    });
+                    
+      
+        
+              
+
+    
